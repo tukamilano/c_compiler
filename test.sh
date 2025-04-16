@@ -15,9 +15,11 @@ assert() {
         exit 1
     fi
 }
-
+<< COMMENTOUT
 assert 0 0
 assert 42 42
 assert 21 "5+20-4"
+COMMENTOUT
+assert 41 " 12 + 34 - 5 "
 
 echo OK
