@@ -10,6 +10,8 @@ author = 'Kei Tsukamoto'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
+html_baseurl = 'https://tukamilano.github.io/c_compiler/'
+
 # 拡張機能リストを一箇所にまとめる
 extensions = [
     'sphinx.ext.autodoc',
