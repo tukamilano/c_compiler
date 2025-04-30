@@ -1,3 +1,18 @@
 c_compiler documentation
 ========================
 
+``` c
+typedef enum {
+    TK_RESERVED, // 記号
+    TK_NUM,      // 整数トークン
+    TK_EOF,      // 入力の終わりを表すトークン
+} TokenKind;
+```
+`enum`とは, enumeratorと呼ばれる名前付きの定数の集合の範囲の値を持つユニークな型のことです. enumeratorの形は構造体や共用体(異なる複数のデータを扱えるデータ型)の形を借りたものになっています. enumeratorのリストの中の識別子は型intの定数として宣言されます. 対応する定数の値は0で始まり, 宣言が左から右に読まれるに従って1ずつ増やされます.  
+`typedef`は新しいデータ型の名前を定義するキーワードです. ここでは`enum`を使って新しいデータ型を定義しています. `typedef enum { ... } TokenKind;`とすることで, `TokenKind`という名前の新しいデータ型が定義されます. これにより, `TokenKind`型の変数を宣言することができるようになります.
+
+``` c
+typedef struct Token Token;
+```
+
+
