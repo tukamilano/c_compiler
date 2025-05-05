@@ -89,3 +89,53 @@ void mov_r32_imm32(Emulator* emu)
     emu->registers[reg] = value;
     emu->eip += 5;
 }
+
+void short_jump(Emulator* emu)
+{
+    int8_t diff = get_sign_code8(emu, 1);
+    emu->eip += (diff + 2);
+}
+
+typedef void instruction_func_t(Emulator*);
+instruction_func_t* instructions[256];
+void init_instructions(void)
+{
+    int i;
+    memset(instructions, 0, sizeof(instructions));
+    for (i = 0; i < 8; i++) {
+        instructions[0xB8 + i] = mov_r32_imm32;
+    }
+    instructions[0xEB] = short_jump;
+}
+
+int main(int argc, char* argv[])
+{
+    FILE* binary;
+    Emulator* emu;
+
+    if (argc != 2) {
+        printf("usage: px86 filename\n");
+        return 1;
+    }
+
+    /* EIPが0, ESPが0x7C00の状態のエミュレータを作る */
+    emu = create_emu(MEMORY_SIZE, 0x0000, 0x7c00);
+
+    binary = fopen(argv[1], "rb");
+    if (binary == NULL) {
+        printf("%sファイルが開けません\n", argv[1]);
+        return 1;
+    }
+
+    /* 機械語ファイルを読み込む (最大512バイト) */
+    fread(emu->memory, 1, 0x200, binary);
+    fclose(binary);
+
+    init_instructions();
+
+    while (emu->eip < MEMORY_SIZE) {
+        uint8_t code = get_code8(emu, 0);
+        
+    }
+
+}
