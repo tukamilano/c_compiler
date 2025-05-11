@@ -1,0 +1,136 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9cc1 &mdash; c_compiler study note  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="canonical" href="https://tukamilano.github.io/c_compiler/9cc1.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            c_compiler study note
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">9cc1</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">c_compiler study note</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">9cc1</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/9cc1.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="cc1">
+<h1>9cc1<a class="headerlink" href="#cc1" title="Link to this heading"></a></h1>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TK_RESERVED</span><span class="p">,</span><span class="w"> </span><span class="c1">// 記号</span>
+<span class="w">    </span><span class="n">TK_NUM</span><span class="p">,</span><span class="w">      </span><span class="c1">// 整数トークン</span>
+<span class="w">    </span><span class="n">TK_EOF</span><span class="p">,</span><span class="w">      </span><span class="c1">// 入力の終わりを表すトークン</span>
+<span class="p">}</span><span class="w"> </span><span class="n">TokenKind</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">enum</span></code>とは, enumeratorと呼ばれる名前付きの定数の集合の範囲の値を持つユニークな型のことです. enumeratorの形は構造体や共用体(異なる複数のデータを扱えるデータ型)の形を借りたものになっています. enumeratorのリストの中の識別子は型intの定数として宣言されます. 対応する定数の値は0で始まり, 宣言が左から右に読まれるに従って1ずつ増やされます.<br />
+<code class="docutils literal notranslate"><span class="pre">typedef</span></code>は新しいデータ型の名前を定義するキーワードです. ここでは<code class="docutils literal notranslate"><span class="pre">enum</span></code>を使って新しいデータ型を定義しています. <code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">enum</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span> <span class="pre">TokenKind;</span></code>とすることで, <code class="docutils literal notranslate"><span class="pre">TokenKind</span></code>という名前の新しいデータ型が定義されます. これにより, <code class="docutils literal notranslate"><span class="pre">TokenKind</span></code>型の変数を宣言することができるようになります.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">Token</span><span class="w"> </span><span class="n">Token</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Token</span></code>は構造体タグ名を前方宣言しています. 2つ目の<code class="docutils literal notranslate"><span class="pre">Token</span></code>は<code class="docutils literal notranslate"><span class="pre">typedef</span></code>による型エイリアスです. この書き方により, 後のコードで構造体を使う時に, <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Token</span></code>と書かずに<code class="docutils literal notranslate"><span class="pre">Token</span></code>と書くだけで済むようになります.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">fmt</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">va_list</span><span class="w"> </span><span class="n">ap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">va_start</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="p">);</span>
+<span class="w">    </span><span class="n">vfprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="p">,</span><span class="w"> </span><span class="n">ap</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">error</span></code>関数の引数の<code class="docutils literal notranslate"><span class="pre">...</span></code>は可変長引数を表す記法です.
+<code class="docutils literal notranslate"><span class="pre">va_list</span></code>は<code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">char*</span> <span class="pre">va_list</span></code>と定義されています. つまり, <code class="docutils literal notranslate"><span class="pre">va_start</span></code>マクロは可変長引数の列の最初の変数へのポインタを<code class="docutils literal notranslate"><span class="pre">va_list</span></code>型変数(<code class="docutils literal notranslate"><span class="pre">char*</span></code>型)に設定しています.</p>
+<p><code class="docutils literal notranslate"><span class="pre">va_start</span></code>の書式は以下である</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">va_start</span><span class="p">(</span><span class="kt">va_list</span><span class="w"> </span><span class="n">ap</span><span class="p">,</span><span class="w"> </span><span class="n">last</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">va_start()</span></code>マクロは最初に呼び出さなければならないマクロで可変長引数の処理を開始します.
+<code class="docutils literal notranslate"><span class="pre">vfprintf(stderr,</span> <span class="pre">fmt,</span> <span class="pre">ap)</span></code>でエラーメッセージを標準エラー出力に書き込みます. kokode
+<code class="docutils literal notranslate"><span class="pre">printf</span></code>は直接可変長引数を受け取りますが, <code class="docutils literal notranslate"><span class="pre">vfprintf</span></code>は<code class="docutils literal notranslate"><span class="pre">va_list</span></code>型の引数を受け取ります.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kei Tsukamoto.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

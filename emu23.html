@@ -1,0 +1,207 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>emu23 &mdash; c_compiler study note  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="canonical" href="https://tukamilano.github.io/c_compiler/emu23.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            c_compiler study note
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">emu23</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">c_compiler study note</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">emu23</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/emu23.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="emu23">
+<h1>emu23<a class="headerlink" href="#emu23" title="Link to this heading"></a></h1>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">Register</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">EAX</span><span class="p">,</span><span class="w"> </span><span class="n">ECX</span><span class="p">,</span><span class="w"> </span><span class="n">EDX</span><span class="p">,</span><span class="w"> </span><span class="n">EBX</span><span class="p">,</span><span class="w"> </span><span class="n">ESP</span><span class="p">,</span><span class="w"> </span><span class="n">EBP</span><span class="p">,</span><span class="w"> </span><span class="n">ESI</span><span class="p">,</span><span class="w"> </span><span class="n">EDI</span><span class="p">,</span><span class="w"> </span><span class="n">REGISTERS_COUNT</span><span class="w"> </span><span class="p">};</span>
+<span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">registers_name</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s">&quot;EAX&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ECX&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;EDX&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;EBX&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ESP&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;EBP&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ESI&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;EDI&quot;</span><span class="p">};</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">EAX</span></code>から<code class="docutils literal notranslate"><span class="pre">EDI</span></code>はx86における汎用レジスタです. 合計で8つのレジスタがあり, <code class="docutils literal notranslate"><span class="pre">REGISTERS_COUNT</span></code>はレジスタの数を表します.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* 汎用レジスタ */</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">  </span><span class="n">registers</span><span class="p">[</span><span class="n">REGISTERS_COUNT</span><span class="p">];</span>
+
+<span class="w">    </span><span class="cm">/* EFLAGSレジスタ */</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">eflags</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* メモリ(バイト列) */</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">memory</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* プログラムカウンタ */</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">eip</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">Emulator</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>x86の汎用レジスタは32ビットの整数を格納することができ, <code class="docutils literal notranslate"><span class="pre">uint32_t</span></code>型で表現されます. EFLAGSレジスタはCPUの現在の状態を示す複数のフラグビットを格納します.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* エミュレータを作成する */</span>
+<span class="k">static</span><span class="w"> </span><span class="n">Emulator</span><span class="o">*</span><span class="w"> </span><span class="nf">create_emu</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">eip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">esp</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Emulator</span><span class="o">*</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Emulator</span><span class="p">));</span>
+<span class="w">    </span><span class="n">emu</span><span class="o">-&gt;</span><span class="n">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* 汎用レジスタの初期値を全て0にする */</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">emu</span><span class="o">-&gt;</span><span class="n">registers</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">emu</span><span class="o">-&gt;</span><span class="n">registers</span><span class="p">));</span>
+
+<span class="w">    </span><span class="cm">/* レジスタの初期値を指定されたものにする */</span>
+<span class="w">    </span><span class="n">emu</span><span class="o">-&gt;</span><span class="n">eip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eip</span><span class="p">;</span>
+<span class="w">    </span><span class="n">emu</span><span class="o">-&gt;</span><span class="n">registers</span><span class="p">[</span><span class="n">ESP</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">esp</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">emu</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Emulatorをプログラム開始時から終了まで確保される固定的な領域(静的領域)に確保します.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 汎用レジスタとプログラムカウンタの値を標準出力に出力する */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">dump_registers</span><span class="p">(</span><span class="n">Emulator</span><span class="o">*</span><span class="w"> </span><span class="n">emu</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">REGISTERS_COUNT</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s = %08x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">registers_name</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">emu</span><span class="o">-&gt;</span><span class="n">registers</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;EIP = %08x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">emu</span><span class="o">-&gt;</span><span class="w"> </span><span class="n">eip</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">%08x</span></code>は16進数(4ビット分)で8桁の整数を出力する書式指定子です.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">get_code32</span><span class="p">(</span><span class="n">Emulator</span><span class="o">*</span><span class="w"> </span><span class="n">emu</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* リトルエンディアンでメモリの値を取得する */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ret</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">get_code8</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>メモリ上ではリトルエンディアンで表現されるため, メモリ上に <code class="docutils literal notranslate"><span class="pre">0x78</span> <span class="pre">0x56</span> <span class="pre">0x34</span> <span class="pre">0x12</span></code> というバイト列があった場合、このコードを実行すると<code class="docutils literal notranslate"><span class="pre">ret</span></code>には <code class="docutils literal notranslate"><span class="pre">0x12345678</span></code> という値が格納されます.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">mov_r32_imm32</span><span class="p">(</span><span class="n">Emulator</span><span class="o">*</span><span class="w"> </span><span class="n">emu</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_code8</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0xB8</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_code32</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">emu</span><span class="o">-&gt;</span><span class="n">registers</span><span class="p">[</span><span class="n">reg</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">    </span><span class="n">emu</span><span class="o">-&gt;</span><span class="n">eip</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">mov</span></code>命令はレジスタに即値を格納する命令です. <code class="docutils literal notranslate"><span class="pre">0xB8</span></code>から始まる命令はレジスタに即値を格納する命令で, <code class="docutils literal notranslate"><span class="pre">0xB8</span></code>から<code class="docutils literal notranslate"><span class="pre">0xBF</span></code>(B8+レジスタの値)までの8種類のレジスタに即値を格納し, <code class="docutils literal notranslate"><span class="pre">get_code8(emu,</span> <span class="pre">0)</span> <span class="pre">-</span> <span class="pre">0xB8</span></code>でレジスタの番号を取得します. <code class="docutils literal notranslate"><span class="pre">get_code32(emu,</span> <span class="pre">1)</span></code>では, <code class="docutils literal notranslate"><span class="pre">0xB8</span></code>の次のバイトから4バイト分を取得し, それをレジスタに格納します. <code class="docutils literal notranslate"><span class="pre">emu-&gt;eip</span> <span class="pre">+=</span> <span class="pre">5</span></code>は命令ポインタを5バイト進めることを意味します. <code class="docutils literal notranslate"><span class="pre">mov</span></code>命令は1バイトのオペコードと4バイトの即値で構成されているため, 合計で5バイト進める必要があります.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">short_jump</span><span class="p">(</span><span class="n">Emulator</span><span class="o">*</span><span class="w"> </span><span class="n">emu</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_sign_code8</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">emu</span><span class="o">-&gt;</span><span class="n">eip</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">diff</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">short</span> <span class="pre">jump</span></code>命令は, <code class="docutils literal notranslate"><span class="pre">jmp</span></code>命令の一種で, 1バイトのオペコードと1バイトの即値で構成されており, 即値は相対アドレスを表します. <code class="docutils literal notranslate"><span class="pre">get_sign_code8(emu,</span> <span class="pre">1)</span></code>で即値を取得し, <code class="docutils literal notranslate"><span class="pre">emu-&gt;eip</span> <span class="pre">+=</span> <span class="pre">(diff</span> <span class="pre">+</span> <span class="pre">2)</span></code>で命令ポインタを進めます. <code class="docutils literal notranslate"><span class="pre">+2</span></code>は命令ポインタを進めるために必要なバイト数です.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">instruction_func_t</span><span class="p">(</span><span class="n">Emulator</span><span class="o">*</span><span class="p">);</span>
+<span class="n">instruction_func_t</span><span class="o">*</span><span class="w"> </span><span class="n">instructions</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">init_instructions</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">instructions</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">instructions</span><span class="p">));</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">instructions</span><span class="p">[</span><span class="mh">0xB8</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mov_r32_imm32</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">instructions</span><span class="p">[</span><span class="mh">0xEB</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">short_jump</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">void</span> <span class="pre">instruction_func_t(Emulator*)</span></code>でエミュレータに命令を実行させる関数ポインタの型を定義します. そして<code class="docutils literal notranslate"><span class="pre">instruction_func_t*</span> <span class="pre">instructions[256]</span></code>でその関数ポインタの配列を作成します.<br />
+instructionsは256個の命令を格納する配列です. x86の命令オペコードは8ビットで表現されるため, 2^8=256となります. そのためinstruction[256]という配列は全てのオペコードに関する命令を格納することができます. <code class="docutils literal notranslate"><span class="pre">mov</span></code>命令は<code class="docutils literal notranslate"><span class="pre">0xB8</span></code>から始まるため, <code class="docutils literal notranslate"><span class="pre">0xB8</span></code>から<code class="docutils literal notranslate"><span class="pre">0xBF</span></code>までの8個の命令をmov_r32_imm32に設定します.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kei Tsukamoto.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
